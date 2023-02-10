@@ -26,7 +26,13 @@ const userSchema = new mongoose.Schema({
     },
     image: {
         type: Object
-    } 
+    },
+    favoris : {
+        type : Array
+    },
+    opinions : {
+        type: Array 
+    }
 },
 {
     timestamps: true,

@@ -11,7 +11,7 @@ const authRouter = require('./routes/Auth.route');
 const StripeRouter = require('./routes/Stripe.route');
 const OrderRouter = require('./routes/Order.route');
 const ImageRouter = require('./routes/image.route');
-//const userRouter = require('./routes/User.route'); 
+const FavRouter = require('./routes/Favoris.route');
 
 /*body-parser pour tranformer ce qu'il y a dans le body des requetes sous formed'objet js*/
 app.use(bodyparser.urlencoded({extended: false}));
@@ -57,6 +57,8 @@ app.use('/api', OrderRouter)
 //middleware for store user's profil's image
 app.use('/api', ImageRouter);
 
+//middleware for store user's favorites products
+app.use('/api/auth', FavRouter);
 
 module.exports = app;
  

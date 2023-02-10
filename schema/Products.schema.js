@@ -14,6 +14,15 @@ const produitsSchema = new mongoose.Schema({
     },
     price: {
         type: Number
+    },
+    description: {
+        type: String
+    },
+    opinions : {
+        type: Array
+    },
+    purchases: {
+        type : Array
     }
 })
 

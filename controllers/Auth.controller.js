@@ -192,7 +192,7 @@ exports.editPasswordEmail = async (req, res) => {
       _id: decodedJwtToken.id
     })
      
-    let datanew;
+    let datanew; 
     let hashkey = Object.prototype.hasOwnProperty.call(req.body, 'email')
     let user1;
     if (hashkey == true) {

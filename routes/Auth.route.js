@@ -2,7 +2,7 @@ const verifySignUp = require("../middleware/VerifySignUp");
 const DataIsValid = require('../middleware/DataIsValid');
 const CheckValidSignup = require('../config/CheckValidSignup')
 const verifyToken = require('../middleware/verifyToken');
-const controller = require("../controllers/Auth.controller");
+const controller = require("../controllers/Auth.controller"); 
 const express = require('express');
 
 const authRouter = express.Router();
@@ -19,7 +19,7 @@ authRouter.route('/profile/address/delete').patch(controller.deleteAdress);
 //on modifie le nom et prenom de l'utilisateur
 authRouter.route('/profile/firstlastname').patch(controller.editLastFirstName);
 //modification du mot de passe ou de l'email de l'utilisateur
-authRouter.route('/profile/editpasswordoremail').patch(controller.editPasswordEmail);  
+authRouter.route('/profile/editpasswordoremail').patch(controller.editPasswordEmail);   
 
  
 module.exports = authRouter;

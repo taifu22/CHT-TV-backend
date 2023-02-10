@@ -10,4 +10,4 @@ const ImageRouter = express.Router();
 Donc cette valeur de la key picture là ca sera notre req.file*/
 ImageRouter.route('/profile/editImageProfil').post(upload.single('picture'), imageController.updateImgProfil);
 
-module.exports = ImageRouter;
+module.exports = ImageRouter; 

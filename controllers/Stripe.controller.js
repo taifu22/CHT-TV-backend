@@ -18,4 +18,4 @@ exports.getStripe = async (req, res) => {
     } catch (error) {
         return res.status(500).send('failed to process payment' + error);
     }
-}
+} 

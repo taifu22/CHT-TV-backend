@@ -10,7 +10,6 @@ exports.createNewOrder = async (req, res) => {
     try {
       const jwtToken = req.headers.authorization.split('Bearer')[1].trim()
       const decodedJwtToken = jwt.decode(jwtToken)
-      console.log(decodedJwtToken);
       const user = await User.findOne({
         _id: decodedJwtToken.id
       }) 
@@ -30,7 +29,7 @@ exports.createNewOrder = async (req, res) => {
       console.error('Error in userService.js', error)
       throw new Error(error)
     }
-  }
+}
 
 //supprimer une commande qui a été annulé pendant le checkout stripe
 exports.cancelNewOrder = async (req, res) => {
