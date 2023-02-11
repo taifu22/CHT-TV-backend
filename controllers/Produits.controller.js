@@ -78,7 +78,7 @@ exports.setPurchaseProduct = async (req, res) => {
             
             const newPurchase = {
                 //dans le deuxieme index on a la date d'achat qu'on stockera dans le tableau purchase de chaque produit de la commande
-                purchaseDate: req.body[1].key,
+                purchaseDate: req.body[req.body.length -1].key,
                 quantity: item.quantity
             }
             const productWithPurchase = await Produits.findOneAndUpdate(
