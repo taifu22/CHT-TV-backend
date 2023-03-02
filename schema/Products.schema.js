@@ -15,6 +15,9 @@ const produitsSchema = new mongoose.Schema({
     price: {
         type: Number
     },
+    picture : {
+        type: Object
+    },
     description: {
         type: String
     },
@@ -23,6 +26,9 @@ const produitsSchema = new mongoose.Schema({
     },
     purchases: {
         type : Array
+    },
+    pictures: {
+        type: Array
     }
 })
 

@@ -25,21 +25,24 @@ exports.setOpinionProduit = async (req, res) => {
         const decodedJwtToken = jwt.decode(jwtToken)
         //console.log(decodedJwtToken);
         const user = await User.findOne({
-            id: decodedJwtToken.id
+            _id: decodedJwtToken.id
         }) 
-
+        console.log(user);
         const product = await Produits.findOne({
-            name: req.body.nameProduct
+            name: req.body.nameProduct 
         })
-        console.log(product);
+
         const newOpinion = {
-            user: user,
+            id: req.body.id,
+            user: user.email,
             nameProduct: req.body.nameProduct,
             userName: req.body.userName,
             opinion: req.body.opinion, 
-            star: req.body.star
+            star: req.body.star,
+            date: req.body.date,
+            report: []
         }
-        console.log(product);
+
         const productWithOpinion = await Produits.findOneAndUpdate(
             { name: req.body.nameProduct }, { opinions:[...product.opinions, newOpinion] }, { new: true }
         )

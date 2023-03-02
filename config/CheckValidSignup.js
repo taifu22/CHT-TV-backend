@@ -4,7 +4,7 @@ const { check } = require('express-validator');
 module.exports = 
     [
         check("firstname") 
-          .isLength({ min: 2 })
+          .isLength({ min: 2 }) 
           .withMessage("the name must have minimum length of 2")
           .trim(),
          

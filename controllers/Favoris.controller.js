@@ -37,7 +37,7 @@ exports.createNewFavorite = async (req, res) => {
     }
   }
   
-  //supprimer une favori de la list (sous tableau)
+  //supprimer une favori de la list (sous tableau) 
   exports.deleteFavorite = async (req, res) => {
     let response = {};
     //console.log(req.body);

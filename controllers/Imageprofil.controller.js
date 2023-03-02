@@ -1,7 +1,7 @@
 let fs = require('fs');
 const db = require("../schema");
 const User = db.user;
-let jwt = require("jsonwebtoken");
+let jwt = require("jsonwebtoken");  
 
 //modifier l'image de profil de l'utilisateur (j'envoie à la bdd le nom de l'image pour aprés la récuperer )
 exports.updateImgProfil = async (req, res) => {

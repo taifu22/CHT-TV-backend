@@ -12,6 +12,9 @@ const StripeRouter = require('./routes/Stripe.route');
 const OrderRouter = require('./routes/Order.route');
 const ImageRouter = require('./routes/image.route');
 const FavRouter = require('./routes/Favoris.route');
+const db = require("./schema/index");
+const AdminRouter = require('./routes/Admin.route');
+const Role = db.role;
 
 /*body-parser pour tranformer ce qu'il y a dans le body des requetes sous formed'objet js*/
 app.use(bodyparser.urlencoded({extended: false}));
@@ -34,12 +37,13 @@ const DB = process.env.DATABASE
 //route public accessible pour les utilisateur, pour stocker et recuperer les images de profile
 app.use('/uploads/imagesUsersProfil', express.static(path.join(__dirname, 'uploads/imagesUsersProfil')))
 
-//connexio à notre bdd mongo
+//connexio à notre bdd mongo, et on ajoute avec initial, le document admin et user a la collection role
 mongoose.connect(DB, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(conn => {
         console.log('connect to database...');
     }).catch(er => {
-        console.log(er);
+        console.log("Connection error", er);
+        process.exit();
     })
 
 //produits Router pour get et post les produits
@@ -60,8 +64,10 @@ app.use('/api', ImageRouter);
 //middleware for store user's favorites products
 app.use('/api/auth', FavRouter);
 
+//middleware for access to dashboard admin 
+app.use('/api/admin', AdminRouter);
+
 module.exports = app;
- 
 
 
 

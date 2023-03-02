@@ -13,9 +13,10 @@ exports.signup = async (req, res) => {
     lastname: req.body.lastname, 
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8), 
+    role: 'user',
     address: [],
     orders: [],
-    image: {}
+    image: {},
   });
  
   user.save((err, user) => {
@@ -28,7 +29,7 @@ exports.signup = async (req, res) => {
 };
 
 //connexion de l'utilisateur en donnant un jwt
-exports.signin = (req, res) => {
+exports.signin = (req, res) => { 
   User.findOne({
     email: req.body.email
   })
@@ -69,18 +70,21 @@ exports.signin = (req, res) => {
 };
 
 //récuperaton des données de l'utilisateur grace au token recu au moment du login
-exports.getUserProfile = async (req, res) => {
+//connexion en temps que admin si role === "admin"
+exports.getUserProfile = async (req, res, next) => {
   let response = {};
   try {
     const jwtToken = req.headers.authorization.split('Bearer')[1].trim()
     const decodedJwtToken = jwt.decode(jwtToken)
     const user = await User.findOne({ _id: decodedJwtToken.id })
-    //console.log(decodedJwtToken);
-    //console.log(user);
     if (!user) {
       throw new Error('User not found!')
     }
-    response.message = 'Successfully got user profile data';
+    if (user.role === 'admin'){
+      response.message = 'Successfully got admin profile data';
+    } else {
+      response.message = 'Successfully got user profile data';
+    }
     response.status = 200
     response.body = user.toObject();
     return res.status(200).send(response)
@@ -225,3 +229,8 @@ exports.editPasswordEmail = async (req, res) => {
     throw new Error(error)
   }
 }
+
+
+
+
+

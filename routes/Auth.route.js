@@ -2,7 +2,7 @@ const verifySignUp = require("../middleware/VerifySignUp");
 const DataIsValid = require('../middleware/DataIsValid');
 const CheckValidSignup = require('../config/CheckValidSignup')
 const verifyToken = require('../middleware/verifyToken');
-const controller = require("../controllers/Auth.controller"); 
+const controller = require("../controllers/Auth.controller");  
 const express = require('express');
 
 const authRouter = express.Router();

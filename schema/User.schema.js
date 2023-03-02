@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    role : {
+        type : String
+    },
     address: {
         type: Array
     },
@@ -32,6 +35,9 @@ const userSchema = new mongoose.Schema({
     },
     opinions : {
         type: Array 
+    },
+    opinionsWithReport: {
+        type: Array
     }
 },
 {
