@@ -400,7 +400,7 @@ exports.deleteReportOpinion = async (req, res) => {
     const admin = await User.findOne({
       _id: decodedJwtToken.id
     })
-    const user = await User.findOne({
+    const user = await User.findOne({ 
       email: req.body.email
     })
     const opinion = await Opinion.findOne({

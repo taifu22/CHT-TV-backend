@@ -1,4 +1,5 @@
 const controller = require("../controllers/Admin.controller");
+const MessagesController = require('../controllers/Messages.controller')
 const express = require('express');
 const multer = require('multer'); 
 
@@ -17,5 +18,7 @@ AdminRouter.route('/dashBoard/opinions/get').post(controller.getOpinionsAdmin);
 AdminRouter.route('/dashBoard/opinions/add-report-opinion').patch(controller.createNewReportOpinion);
 AdminRouter.route('/dashBoard/opinions/delete-report-opinion').patch(controller.deleteReportOpinion);
 AdminRouter.route('/dashBoard/opinions/delete').patch(controller.deleteOpinion);
+//je écupère les messages pour les fficher coté dash admin, en route post car j'anvoi le token par sécurité
+AdminRouter.route('/dashBoard/messages/get').post(MessagesController.getMessagesAdmin);
 
 module.exports = AdminRouter; 

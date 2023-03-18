@@ -8,7 +8,7 @@ verifyToken = (req, res, next) => {
   let response = {}
 
   try {
-    if (!req.headers.authorization) {
+    if (!req.headers.authorization) { 
       throw new Error('Token is missing from header') 
     }
  

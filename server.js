@@ -14,6 +14,7 @@ const ImageRouter = require('./routes/image.route');
 const FavRouter = require('./routes/Favoris.route');
 const db = require("./schema/index");
 const AdminRouter = require('./routes/Admin.route');
+const MessRouter = require('./routes/Messages.route');
 const Role = db.role;
 
 /*body-parser pour tranformer ce qu'il y a dans le body des requetes sous formed'objet js*/
@@ -66,6 +67,9 @@ app.use('/api/auth', FavRouter);
 
 //middleware for access to dashboard admin 
 app.use('/api/admin', AdminRouter);
+
+//middleware for sends and stores messages from user and admin
+app.use('/api/auth', MessRouter);
 
 module.exports = app;
 

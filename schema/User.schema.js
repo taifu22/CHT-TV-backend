@@ -32,12 +32,18 @@ const userSchema = new mongoose.Schema({
     },
     favoris : {
         type : Array
-    },
+    }, 
     opinions : {
         type: Array 
     },
     opinionsWithReport: {
         type: Array
+    },
+    messages: {
+        type: Array 
+    },
+    newMessage : {
+        type: Boolean
     }
 },
 {

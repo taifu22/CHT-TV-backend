@@ -9,5 +9,6 @@ db.user = require("./User.schema");
 db.product = require("./Products.schema");
 db.orders = require("./Order.schema");
 db.opinion = require("./Opinion.schema");
+db.message = require('./Messages.schema');
 
 module.exports = db;

@@ -1,6 +1,8 @@
 const config = require("../config/Auth.config");
 const db = require("../schema");
 const User = db.user;
+const nodemailer = require('nodemailer');
+const TextEmail = require('./../config/TextEmailSend')
   
 let jwt = require("jsonwebtoken");
 let bcrypt = require("bcryptjs");
@@ -17,6 +19,10 @@ exports.signup = async (req, res) => {
     address: [],
     orders: [],
     image: {},
+    favoris: [],
+    opinions: [],
+    opinionsWithReport: [],
+    messages: []
   });
  
   user.save((err, user) => {
@@ -24,6 +30,24 @@ exports.signup = async (req, res) => {
       res.status(500).send({ message: err });
       return;
     }
+
+    let transporter = nodemailer.createTransport({  
+      host: 'smtp.gmail.com',
+      port: 587, // 587 -> TLS & 465 -> SSL
+      auth: {  
+        user: 'adil70hamid@gmail.com', // email de votre votre compte google
+        pass: 'dbjvzkkmurhpotfh' // password de votre compte google
+      }  
+    });
+
+    transporter.sendMail(TextEmail.TextEmailSend(req.body.email, req.body.firstname), (error, info) => {  
+      if (error) {  
+        console.log(error);  
+      } else {  
+        console.log('Email: ' + info.response);  
+      }  
+    });
+
     res.status(200).send({ message: "User was registered successfully!" });
   });
 };
@@ -230,7 +254,45 @@ exports.editPasswordEmail = async (req, res) => {
   }
 }
 
+// //middleware pour envoyer une email à l'admin du site, depuis la page de contact
+// exports.sendEmail = async (req, res) => {
+//   try {
+//     const jwtToken = req.headers.authorization.split('Bearer')[1].trim()
+//     const decodedJwtToken = jwt.decode(jwtToken) 
+//     const user = await User.findOne({
+//       _id: decodedJwtToken.id
+//     })
 
+//     console.log(req.body);
+
+//     let transporter = nodemailer.createTransport({  
+//       host: 'smtp.gmail.com',
+//       port: 587, // 587 -> TLS & 465 -> SSL
+//       auth: {  
+//         user: 'adil70hamid@gmail.com', // email de votre votre compte google
+//         pass: 'dbjvzkkmurhpotfh' // password de votre compte google
+//       }  
+//     });
+
+//     transporter.sendMail(TextEmail.TextEmailSendContact(user.email, user.firstname + ' ' + user.lastname), (error, info) => {  
+//       if (error) {  
+//         console.log(error);  
+//       } else {  
+//         console.log('Email: ' + info.response);  
+//       }  
+//     });
+
+//     if (!user) {
+//       throw new Error('User not found!')
+//     }
+
+//     return res.status(200).send({ message: "Email send successfully!" });
+
+//   } catch (error) {
+//     console.error('Error in userService.js', error)
+//     throw new Error(error)
+//   }
+// };
 
 
 
