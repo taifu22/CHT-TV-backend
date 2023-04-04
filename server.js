@@ -28,7 +28,7 @@ app.use(cors());
 //connexion à notre server 
 app.listen(PORT, () => {
     console.log('server up and running on http://localhost:'+ PORT);
-});
+}); 
 
 //configuration du dotenv pour acceder au fichier avec les variables d'environnement
 dotenv.config({path: './config.env'});
