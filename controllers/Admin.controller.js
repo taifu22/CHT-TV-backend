@@ -90,6 +90,7 @@ exports.addNewProduct = async (req, res) => {
             //ici on stockera du coup les 4 images qu'on verra dans la lightbox coté page produit details
             pictures : arrayProduct
           }
+            
 
           //ici on sauvegarde dans notre collection le nouveau produit avec id unique
           const product = new Product(newProduct)
@@ -119,8 +120,6 @@ exports.addNewProduct = async (req, res) => {
 //modifier un produit
 exports.updateProduct = async (req, res) => {
   let response = {};
-  console.log(req.files);
-  console.log(req.body);
   try {
       const jwtToken = req.headers.authorization.split('Bearer')[1].trim();
       const decodedJwtToken = jwt.decode(jwtToken);
@@ -145,8 +144,8 @@ exports.updateProduct = async (req, res) => {
         //delete images product from /uploads/imagesUserProfil for store new images
         if (product['pictures'] !== undefined) {
           product.pictures.map(item => {
-            if (item['data'] !== undefined) {
-              const filename = item.data  
+            if (item['filename'] !== undefined) {
+              const filename = item.filename  
               const directoryPath = "C:/react projets/project-cht-TV/backend/uploads/imagesUsersProfil/";
               fs.unlink(directoryPath + filename, (error) => {
                   if (error) {

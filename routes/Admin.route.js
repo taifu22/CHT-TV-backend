@@ -21,4 +21,4 @@ AdminRouter.route('/dashBoard/opinions/delete').patch(controller.deleteOpinion);
 //je écupère les messages pour les fficher coté dash admin, en route post car j'anvoi le token par sécurité
 AdminRouter.route('/dashBoard/messages/get').post(MessagesController.getMessagesAdmin);
 
-module.exports = AdminRouter; 
+module.exports = AdminRouter;  

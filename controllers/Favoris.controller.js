@@ -13,12 +13,9 @@ exports.createNewFavorite = async (req, res) => {
       const user = await User.findOne({
         _id: decodedJwtToken.id
       })
-      //console.log(user);
+      //on créé notre favoris dans le array favoris du document user, à savoir que l'id c'est celui du produit rattaché
       const favoriteCreate = {
         id: req.body.id,
-        category: req.body.category,
-        name: req.body.name,
-        price: req.body.price
       }
       const user1 = await User.findOneAndUpdate(
         { _id: decodedJwtToken.id }, { favoris:[...user.favoris, favoriteCreate] }, { new: true }
@@ -34,7 +31,7 @@ exports.createNewFavorite = async (req, res) => {
     } catch (error) {
       console.error('Error in userService.js', error)
       throw new Error(error)
-    }
+    } 
   }
   
   //supprimer une favori de la list (sous tableau) 

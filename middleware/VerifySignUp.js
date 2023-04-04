@@ -21,4 +21,4 @@ verifySignUp = (req, res, next) => {
     });
 }; 
 
-module.exports = verifySignUp;
+module.exports = verifySignUp; 
