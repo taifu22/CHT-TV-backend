@@ -6,15 +6,15 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require('path');
-const produitsRouter = require('./routes/Produits.route');
-const authRouter = require('./routes/Auth.route');
-const StripeRouter = require('./routes/Stripe.route');
-const OrderRouter = require('./routes/Order.route');
-const ImageRouter = require('./routes/image.route');
-const FavRouter = require('./routes/Favoris.route');
-const db = require("./schema/index");
-const AdminRouter = require('./routes/Admin.route');
-const MessRouter = require('./routes/Messages.route');
+const produitsRouter = require('../routes/Produits.route');
+const authRouter = require('../routes/Auth.route');
+const StripeRouter = require('../routes/Stripe.route');
+const OrderRouter = require('../routes/Order.route');
+const ImageRouter = require('../routes/image.route');
+const FavRouter = require('../routes/Favoris.route');
+const db = require("../schema/index");
+const AdminRouter = require('../routes/Admin.route');
+const MessRouter = require('../routes/Messages.route');
 const Role = db.role;
 
 /*body-parser pour tranformer ce qu'il y a dans le body des requetes sous formed'objet js*/
