@@ -1,10 +1,10 @@
 {
   "name": "project-cht-TV",
   "version": "1.0.0",
-  "main": "./api/index.js",
+  "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon ./api/index.js"
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
