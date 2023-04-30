@@ -29,6 +29,12 @@ const produitsSchema = new mongoose.Schema({
     },
     pictures: {
         type: Array
+    },
+    priceReduction: {
+        type: Number
+    },
+    percentageReduction: {
+        type: String
     }
 })
 

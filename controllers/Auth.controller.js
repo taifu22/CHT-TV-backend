@@ -6,13 +6,12 @@ const TextEmail = require('./../config/TextEmailSend')
   
 let jwt = require("jsonwebtoken");
 let bcrypt = require("bcryptjs");
-//const { user1, user } = require("../schema");
 
 //on créé un nouvel utilisateur dans la bdd
 exports.signup = async (req, res) => {
   const user = new User({
     firstname: req.body.firstname,
-    lastname: req.body.lastname, 
+    lastname: req.body.lastname,  
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8), 
     role: 'user',

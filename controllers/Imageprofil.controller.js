@@ -16,7 +16,7 @@ exports.updateImgProfil = async (req, res) => {
             _id: decodedJwtToken.id
         })
         //delete image profil if already exist, for replace with the new image of profil
-        if (user1['image'] !== undefined) {
+        if (user1['image'] !== undefined) { 
             if (user1.image['img'] !== undefined) {
                 console.log(user1.image.img.data);
                 const filename = user1.image.img.data  

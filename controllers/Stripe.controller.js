@@ -16,6 +16,6 @@ exports.getStripe = async (req, res) => {
 
         res.json({id: session.id})
     } catch (error) {
-        return res.status(500).send('failed to process payment' + error);
+        return res.status(500).send('failed to process payment' + error); 
     }
 } 

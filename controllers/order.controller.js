@@ -15,12 +15,11 @@ exports.createNewOrder = async (req, res) => {
       }) 
       
       const user1 = await User.findOneAndUpdate(
-        { _id: decodedJwtToken.id }, { orders:[...user.orders, req.body] }, { new: true }
+        { _id: decodedJwtToken.id }, { orders:[...user.orders, req.body] }, { new: true } 
       )
       if (!user1) {
         throw new Error('User not found!')
       }
-      //console.log(user1);
       response.message = 'Successfully add orders data';
       response.status = 200
       response.body = user1.orders.toObject();

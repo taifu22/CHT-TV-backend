@@ -6,7 +6,7 @@ const Order = db.orders;
 const Opinion = db.opinion;
 let fs = require('fs');
   
-let jwt = require("jsonwebtoken");
+let jwt = require("jsonwebtoken"); 
 
 //supprimer un produit, en ayant le token et seulement si le role est admin
 exports.deleteProduct = async (req, res) => {
@@ -88,7 +88,8 @@ exports.addNewProduct = async (req, res) => {
                 contentType: arrayProduct[0].mimetype
             },
             //ici on stockera du coup les 4 images qu'on verra dans la lightbox coté page produit details
-            pictures : arrayProduct
+            pictures : arrayProduct,
+            priceReduction: null
           }
             
 
@@ -106,7 +107,7 @@ exports.addNewProduct = async (req, res) => {
             return res.status(200).send(response);
           });
       }
-    
+     
       if (!user) {
       throw new Error('User not found!');
       }
@@ -120,6 +121,7 @@ exports.addNewProduct = async (req, res) => {
 //modifier un produit
 exports.updateProduct = async (req, res) => {
   let response = {};
+  console.log(req.body);
   try {
       const jwtToken = req.headers.authorization.split('Bearer')[1].trim();
       const decodedJwtToken = jwt.decode(jwtToken);
@@ -169,7 +171,9 @@ exports.updateProduct = async (req, res) => {
           picture: product.picture,
           //ici on stockera du coup les 4 images qu'on verra dans la lightbox coté page produit details 
           //(si pas de modification d'images on rècupére les images qu'on avait déja)
-          pictures: product.pictures
+          pictures: product.pictures,
+          priceReduction: req.body.priceReduction ? req.body.priceReduction : null,
+          percentageReduction: req.body.percentageReduction ? req.body.percentageReduction : null
         }
 
         //si on a un ou plusieurs fichier image on modifie le picture (image par defaut principale), et la liste des images du produit (pictures)
@@ -221,7 +225,7 @@ exports.addNewOrder = async (req, res) => {
         product: req.body.product,
         total: req.body.total,
         delivery: req.body.delivery,
-        orderNumber: req.body.orderNumber,
+        orderNumber: req.body.orderNumber, 
         userEmail: req.body.email
       }
       //ici on sauvegarde dans notre collection le nouveau produit avec id unique
@@ -394,7 +398,7 @@ exports.createNewReportOpinion = async (req, res) => {
 exports.deleteReportOpinion = async (req, res) => {
   let response = {};
   try {
-    const jwtToken = req.headers.authorization.split('Bearer')[1].trim()
+    const jwtToken = req.headers.authorization.split('Bearer')[1].trim();
     const decodedJwtToken = jwt.decode(jwtToken)
     const admin = await User.findOne({
       _id: decodedJwtToken.id

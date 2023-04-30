@@ -127,3 +127,41 @@ exports.cancelNewpurchase = async (req, res) => {
         console.log(error);
     }
   }
+
+  /*on créé un controller pour rendre à null le pricereduction et percentagereduction si l'on choisit dans la dash admin de modifier 
+  entierement le prix du produit sans passer par reduction*/
+  exports.deletePricePercentageReduction = async (req, res) => {
+    let response = {};
+    console.log(req.body);
+    try {
+      const jwtToken = req.headers.authorization.split('Bearer')[1].trim()
+      const decodedJwtToken = jwt.decode(jwtToken)
+      const admin = await User.findOne({
+        _id: decodedJwtToken.id
+      })
+
+      const product = await Produits.findOne({
+        id: req.body.id
+      })
+      
+      if (admin.role === "admin") {
+        const newProduit = await Produits.findOneAndUpdate(
+          { id: req.body.id }, { priceReduction: null }, { new: true }
+        )
+        const newProduit1 = await Produits.findOneAndUpdate(
+            { id: req.body.id }, { percentageReduction: null }, { new: true }
+          )
+      }
+  
+      if (!admin) {
+        throw new Error('User not found!');
+      }
+      
+      response.message = 'Successfully null price and percentage reduction';
+      response.status = 200
+      return res.status(200).send(response);
+    } catch (error) {
+      console.error('Error in userService.js', error)
+      throw new Error(error)
+    }
+  }
