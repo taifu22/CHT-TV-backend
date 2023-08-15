@@ -1,28 +1,31 @@
 const db = require("../schema");
 let fs = require('fs');
-const Categorys = db.categorys;
+const PromosCode = db.promosCode;
 const User = db.user;
 let jwt = require("jsonwebtoken");
+const dotenv = require('dotenv');
+dotenv.config({ path: './config.env' });
+const stripe = require('stripe')(process.env.SECRET_KEY_STRIPE_TEST);
 
 
 //controller pour récuperer la liste des categories
-exports.getCategories = async (req, res) => {
+exports.getPromosCode = async (req, res) => {
     try {
-        const categorys = await Categorys.find();
+        const promosCode = await PromosCode.find();
         res.status(200).json({
             status: 'success',
-            data: categorys
+            data: promosCode
         })
 
     } catch (error) {
-        console.log(error);
+        console.log(error); 
     }
 }
 
 //controller pour créer une nouvelle categorie, pour les produits coté dashboard admin
-exports.createNewCategory = async (req, res) => {
+exports.createNewPromosCode = async (req, res) => {
     let response = {};
-    console.log(req.file);
+    console.log(req.body);
     try {
         //on verifie comme toujours en premier le token de l'user pour verifier aprés qu'il s'agit bien de l'admin
         const jwtToken = req.headers.authorization.split('Bearer')[1].trim()
@@ -37,22 +40,33 @@ exports.createNewCategory = async (req, res) => {
         //on verifie si l'user est bien l'admin pour qu'il puisse ajouter une nouvelle categorie
         if (user.role === 'admin') {
             //on créé notre nouvelle category
-            const newCategory = {
-                name: req.body.name,
-                image: req.file.filename
+            const newpromosCode = {
+                code: req.body.code,
+                price: req.body.price,
+                description: req.body.description
             }
             //on ajoute la nouvelle categorie dans la collection Categorys
-            const category = new Categorys(newCategory)
-            category.save((err, user) => {
+            const promosCode = new PromosCode(newpromosCode)
+            promosCode.save((err, user) => {
                 if (err) {
                     res.status(500).send({ message: err });
                     return;
                 }
-                response.message = 'Successfully add new category';
+                console.log(promosCode);
+                response.message = 'Successfully add new promosCode';
                 response.status = 200
-                response.body = category.toObject();
+                response.body = promosCode.toObject();
                 return res.status(200).send(response);
             });
+            //on créé le coupon dans la dashBoard de Stripe
+            const coupon = await stripe.coupons.create({
+                name: req.body.code,
+                amount_off: req.body.price * 100,
+                currency: 'eur',
+                duration: 'once', // Durée d'utilisation du coupon (une fois)
+            });
+          
+            res.json(coupon);
         }
 
     } catch (error) {
@@ -62,7 +76,7 @@ exports.createNewCategory = async (req, res) => {
 }
 
 //supprimer un produit, en ayant le token et seulement si le role est admin
-exports.deleteCategory = async (req, res) => {
+exports.deletePromosCode = async (req, res) => {
     let response = {};
     try {
         const jwtToken = req.headers.authorization.split('Bearer')[1].trim();
@@ -72,24 +86,29 @@ exports.deleteCategory = async (req, res) => {
         })
 
         if (user.role === 'admin') {
-            const category = await Categorys.findOne(
+            //récupèration du code promo depuis la bdd
+            const promosCode = await PromosCode.findOne(
                 { _id: req.body.id }
             )
-            //delete image (icon) of category 
-            if (category['image'] !== undefined) {
-                const filename = category.image  
-                const directoryPath = "C:/react projets/project-cht-TV/backend/uploads/imagesUsersProfil/";
-                fs.unlink(directoryPath + filename, (error) => {
-                    if (error) {
-                        console.log('Found error see here: ' + error);
-                    }
-                })
-            }
-            console.log(category);
-            const category1 = await Categorys.findOneAndDelete(
+            //suppression code promo depuis la bdd
+            const promosCode1 = await PromosCode.findOneAndDelete(
                 { _id: req.body.id }, { new: true }
             )
-            response.message = 'Successfully delete category data';
+
+            //suppression du code promo depuis la dashboard Stripe
+            // Récupération de tous les coupons
+            const coupons = await stripe.coupons.list();
+            // Recherche du coupon par son nom
+            const coupon = coupons.data.find(c => c.name === req.body.name);
+            if (!coupon) {
+            throw new Error('Coupon not found');
+            }
+            //suppression du code promo depuis la dash Stripe
+            const deletedCoupon = await stripe.coupons.del(coupon.id); 
+            //réponse de la suppression 
+            res.json(deletedCoupon);
+
+            response.message = 'Successfully delete promosCode data'; 
             response.status = 200 
         }
         return res.status(200).send(response); 

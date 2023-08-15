@@ -16,6 +16,8 @@ const db = require("./schema/index");
 const AdminRouter = require('./routes/Admin.route');
 const MessRouter = require('./routes/Messages.route');
 const CatRouter = require('./routes/Category.route');
+const PromosRouter = require('./routes/PromosCode.route');
+const CartRouter = require('./routes/Cart.route');
 const Role = db.role;
 
 /*body-parser pour tranformer ce qu'il y a dans le body des requetes sous formed'objet js*/
@@ -66,6 +68,9 @@ app.use('/api', ImageRouter);
 //middleware for store user's favorites products
 app.use('/api/auth', FavRouter);
 
+//middleware for store user's cart products
+app.use('/api/cart', CartRouter);
+
 //middleware for access to dashboard admin 
 app.use('/api/admin', AdminRouter);
 
@@ -74,6 +79,9 @@ app.use('/api/auth', MessRouter);
 
 //middleware for access to dashboard admin and add or delete category
 app.use('/api/admin', CatRouter);
+
+//middleware for access to dashboard admin and add or delete prmos code
+app.use('/api/admin', PromosRouter);
 
 module.exports = app; 
 

@@ -15,6 +15,9 @@ const ordersSchema = new mongoose.Schema({
     },
     userEmail: {
         type: String
+    },
+    promo: {
+        type: Number
     }
 })
 

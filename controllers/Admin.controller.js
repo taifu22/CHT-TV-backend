@@ -48,11 +48,8 @@ exports.deleteProduct = async (req, res) => {
     }
 }
 
-
 //controller pour ajouter un nouveau produit dans la bdd avec image description etc....
 exports.addNewProduct = async (req, res) => {
-  //console.log(req.files);
-  //console.log(req.file);
   let response = {};
 
   try {
@@ -89,7 +86,8 @@ exports.addNewProduct = async (req, res) => {
             },
             //ici on stockera du coup les 4 images qu'on verra dans la lightbox coté page produit details
             pictures : arrayProduct,
-            priceReduction: null
+            priceReduction: null,
+            percentageReduction: null
           }
             
 
@@ -226,7 +224,8 @@ exports.addNewOrder = async (req, res) => {
         total: req.body.total,
         delivery: req.body.delivery,
         orderNumber: req.body.orderNumber, 
-        userEmail: req.body.email
+        userEmail: req.body.email,
+        promo: req.body.promo
       }
       //ici on sauvegarde dans notre collection le nouveau produit avec id unique
       const order = new Order(newOrder)

@@ -1,6 +1,7 @@
 const config = require("../config/Auth.config");
 const db = require("../schema");
 const User = db.user;
+const Cart = db.cart;
 const nodemailer = require('nodemailer');
 const TextEmail = require('./../config/TextEmailSend')
   
@@ -13,7 +14,7 @@ exports.signup = async (req, res) => {
     firstname: req.body.firstname,
     lastname: req.body.lastname,  
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8), 
+    password: bcrypt.hashSync(req.body.password, 8),  
     role: 'user',
     address: [],
     orders: [],
@@ -23,22 +24,38 @@ exports.signup = async (req, res) => {
     opinionsWithReport: [],
     messages: []
   });
- 
-  user.save((err, user) => {
+  console.log(user);
+  //on créé dans la collection Cart un nouveau document où on sauvegardera les produits que le user ajoutera à son panier
+  //on va d'abord récupèrer le nouveau user créé pour pouvoir aprés rècupèrer son id et le sauvegarder dans notre nouveau document dans Cart
+  const cart = new Cart({
+    user: req.body.email,
+    userId: user.id,
+    products: []
+  })
+  //on sauvegarde notre panier dans la collection Cart 
+  cart.save((err, cart) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
     }
 
+    res.status(200).send({ message: "User's cart was registered successfully!" });
+  });
+  //on sauvegarde notre user dans la collection User
+  user.save((err, user) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+    //on envoie l'email au clinet user comme quoi il s'est bien enregistré dans notre site
     let transporter = nodemailer.createTransport({  
       host: 'smtp.gmail.com',
       port: 587, // 587 -> TLS & 465 -> SSL
       auth: {  
         user: 'adil70hamid@gmail.com', // email de votre votre compte google
-        pass: 'dbjvzkkmurhpotfh' // password de votre compte google
+        pass: 'dbjvzkkmurhpotfh' // password de votre compte google 
       }  
     });
-
     transporter.sendMail(TextEmail.TextEmailSend(req.body.email, req.body.firstname), (error, info) => {  
       if (error) {  
         console.log(error);  
@@ -181,7 +198,7 @@ exports.editLastFirstName = async (req, res) => {
   let response = {};
   //console.log(req.headers);
   try {
-    const jwtToken = req.headers.authorization.split('Bearer')[1].trim()
+    const jwtToken = req.headers.authorization.split('Bearer')[1].trim() 
     const decodedJwtToken = jwt.decode(jwtToken)
     const user = await User.findOne({
       _id: decodedJwtToken.id
